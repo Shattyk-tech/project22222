@@ -1,0 +1,68 @@
+package peaksoft.second_project_sh.services;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import peaksoft.second_project_sh.dto.mapper.CourseMapper;
+import peaksoft.second_project_sh.dto.response.CourseDto;
+import peaksoft.second_project_sh.model.Course;
+import peaksoft.second_project_sh.repositories.CourseRepository;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+@AllArgsConstructor
+public class CourseServiceImpl implements CourseService{
+
+    private final CourseRepository courseRepository;
+    private  final CourseMapper courseMapper;
+    private  final  CompanyService companyService;
+
+    @Override
+    public Course saveCourse(CourseDto courseDto,Long companyId) {
+        Course course = courseMapper.create(courseDto);
+        course.setCompany(companyService.findById(companyId));
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public void removeCourseById(Long id)  {
+        courseRepository.deleteById(id);
+
+    }
+
+    @Override
+    public Course getById(Long id) {
+        return courseRepository.getById(id);
+    }
+
+    @Override
+    public List<Course> getAllCourse() {
+        return courseRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Course update(Long id, Course course) {
+
+        Course course1 = getById(id);
+
+        String currentName = course1.getName();
+        String newName = course.getName();
+        if (!Objects.equals(currentName, newName)) {
+            course1.setName(newName);
+        }
+
+
+        String oldDurationMonth = course1.getDurationMonth();
+        String durationMonth = course.getDurationMonth();
+        if (!Objects.equals(oldDurationMonth,durationMonth)){
+            course1.setDurationMonth(durationMonth);
+        }
+
+        return course1;
+    }
+
+
+}
