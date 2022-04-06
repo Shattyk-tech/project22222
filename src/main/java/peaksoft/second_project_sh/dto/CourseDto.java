@@ -1,4 +1,4 @@
-package peaksoft.second_project_sh.dto.response;
+package peaksoft.second_project_sh.dto;
 
 import lombok.Getter;
 import lombok.Setter;

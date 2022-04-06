@@ -1,5 +1,5 @@
 package peaksoft.second_project_sh.services;
-import peaksoft.second_project_sh.dto.response.CourseDto;
+import peaksoft.second_project_sh.dto.CourseDto;
 import peaksoft.second_project_sh.model.Course;
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface CourseService {
     List<Course> getAllCourse();
 
 
-    Course update(Long id, Course course);
+    CourseDto update(Long id, CourseDto course);
 
     void removeCourseById(Long id);
 }

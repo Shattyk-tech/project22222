@@ -19,7 +19,8 @@ public interface CompanyService {
 
     List<Company> getAllCompany();
 
-    Company update( Company company);
+    CompanyDto update(CompanyDto company,Long id);
+
     Company findById(Long id);
 }
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import peaksoft.second_project_sh.dto.CompanyDto;
 import peaksoft.second_project_sh.model.Company;
 
+
 @Component
 public class CompanyMapper {
 
@@ -18,6 +19,7 @@ public class CompanyMapper {
         company.setLocatedCountry(companyDto.getLocatedCountry());
         return  company;
     }
+
 
 
 }

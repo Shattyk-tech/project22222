@@ -1,6 +1,6 @@
 package peaksoft.second_project_sh.services;
 
-import peaksoft.second_project_sh.dto.response.GroupDto;
+import peaksoft.second_project_sh.dto.GroupDto;
 import peaksoft.second_project_sh.model.Group;
 
 import java.util.List;
@@ -15,5 +15,5 @@ public interface GroupService {
 
     List<Group> getAllGroup();
 
-    Group update(Group group,Long id);
+    GroupDto update(GroupDto group,Long id);
 }

@@ -5,14 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import static javax.persistence.CascadeType.*;
 
 @Entity
@@ -22,22 +17,24 @@ import static javax.persistence.CascadeType.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Group {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String groupName;
     private String dateOfStart;
     private String dateOfFinish;
 
-    @ManyToMany(cascade = MERGE)
-    @JoinTable(name = "course_group", joinColumns = @JoinColumn(name = "course_id"),
+    @ManyToMany(cascade = {PERSIST,DETACH,MERGE,REFRESH})
+    @JoinTable(name = "course_group",
+            joinColumns = @JoinColumn(name = "course_id"),
                 inverseJoinColumns = @JoinColumn(name = "group_id"))
     @JsonIgnore
     private List<Course> courses;
 
-    @OneToMany(mappedBy = "group",fetch = FetchType.EAGER ,cascade = REMOVE)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<Student> student;
+    @OneToMany(
+            cascade = {REMOVE},mappedBy = "group")
+      private List<Student> student;
 
 
     @JsonIgnore

@@ -2,8 +2,9 @@ package peaksoft.second_project_sh.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import peaksoft.second_project_sh.dto.mapper.CourseMapper;
-import peaksoft.second_project_sh.dto.response.CourseDto;
+import peaksoft.second_project_sh.dto.CourseDto;
 import peaksoft.second_project_sh.model.Course;
 import peaksoft.second_project_sh.repositories.CourseRepository;
 
@@ -34,7 +35,12 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public Course getById(Long id) {
-        return courseRepository.getById(id);
+        return courseRepository.findById(id)
+                .orElseThrow(()->{
+                    throw new NotFoundException(
+                            String.format("student with id = %s  does not exist",id)
+                    );
+                });
     }
 
     @Override
@@ -44,9 +50,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public Course update(Long id, Course course) {
+    public CourseDto update(Long id, CourseDto course) {
 
-        Course course1 = getById(id);
+        Course course1 = courseRepository.getById(id);
 
         String currentName = course1.getName();
         String newName = course.getName();
@@ -61,7 +67,7 @@ public class CourseServiceImpl implements CourseService{
             course1.setDurationMonth(durationMonth);
         }
 
-        return course1;
+        return course;
     }
 
 

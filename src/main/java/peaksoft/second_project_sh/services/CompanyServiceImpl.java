@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 import peaksoft.second_project_sh.dto.CompanyDto;
 import peaksoft.second_project_sh.dto.mapper.CompanyMapper;
 import peaksoft.second_project_sh.model.Company;
+import peaksoft.second_project_sh.model.Course;
 import peaksoft.second_project_sh.repositories.CompanyRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -41,10 +43,23 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company update( Company company) {
+    @Transactional
+    public CompanyDto update( CompanyDto companyDto,Long id) {
+        Company company =companyRepository.getById(id);
 
-       return companyRepository.save(company);
+        String currentName = company.getName();
+        String newName = companyDto.getName();
+        if (!Objects.equals(currentName, newName)) {
+            company.setName(newName);
+        }
 
+        String locatedCountry = company.getLocatedCountry();
+        String newLocatedCountry = companyDto.getLocatedCountry();
+        if (!Objects.equals(locatedCountry,newLocatedCountry)){
+            company.setLocatedCountry(newLocatedCountry);
+        }
+
+        return companyDto;
     }
 
     @Override

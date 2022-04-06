@@ -1,7 +1,7 @@
 package peaksoft.second_project_sh.dto.mapper;
 
 import org.springframework.stereotype.Component;
-import peaksoft.second_project_sh.dto.response.GroupDto;
+import peaksoft.second_project_sh.dto.GroupDto;
 import peaksoft.second_project_sh.model.Group;
 
 @Component

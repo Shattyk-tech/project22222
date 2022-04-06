@@ -1,18 +1,19 @@
 package peaksoft.second_project_sh.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import peaksoft.second_project_sh.dto.mapper.TeacherMapper;
-import peaksoft.second_project_sh.dto.response.TeacherDto;
+import peaksoft.second_project_sh.dto.TeacherDto;
+import peaksoft.second_project_sh.model.Student;
 import peaksoft.second_project_sh.model.Teacher;
 import peaksoft.second_project_sh.repositories.TeacherRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class TeacherServiceImpl implements TeacherService{
 
@@ -33,8 +34,13 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public Teacher getById(long id) {
-        return teacherRepository.getById(id);
+    public Teacher getById(Long id) {
+        return teacherRepository.findById(id)
+                .orElseThrow(()->{
+                    throw new NotFoundException(
+                            String.format("student with id = %s  does not exist",id)
+                    );
+                });
     }
 
     @Override
@@ -42,9 +48,36 @@ public class TeacherServiceImpl implements TeacherService{
         return teacherRepository.findAll();
     }
 
+
     @Override
-    public Teacher update(long id, Teacher teacher) {
-        teacherRepository.findById(id).get();
+    @Transactional
+    public TeacherDto update(Long id, TeacherDto teacher) {
+        Teacher teacher1 = teacherRepository
+                .findById(id).orElseThrow(()->{
+            throw new NotFoundException(
+                    String.format("teacher with id =%s does not exist",id)
+            );
+        });
+
+        String nameT = teacher1.getFirstName();
+        String newName = teacher.getFirstName();
+
+        if (!Objects.equals(nameT, newName)) {
+            teacher1.setFirstName(newName);
+        }
+
+        String lastName = teacher1.getLastName();
+        String newLastName = teacher.getLastName();
+
+        if (!Objects.equals(lastName,newLastName)){
+            teacher1.setLastName(newLastName);
+        }
+        String email = teacher1.getEmail();
+        String newEmail = teacher.getEmail();
+
+        if (!Objects.equals(email,newEmail)){
+            teacher1.setEmail(newEmail);
+        }
 
         return teacher;
     }

@@ -1,6 +1,6 @@
 package peaksoft.second_project_sh.services;
 
-import peaksoft.second_project_sh.dto.response.TeacherDto;
+import peaksoft.second_project_sh.dto.TeacherDto;
 import peaksoft.second_project_sh.model.Teacher;
 
 
@@ -12,9 +12,9 @@ public interface TeacherService {
 
     void deleteTeacherById(Long id) ;
 
-    Teacher getById(long id);
+    Teacher getById(Long id);
 
     List<Teacher> getAllTeacher();
 
-    Teacher update(long id, Teacher teacher);
+    TeacherDto update(Long id, TeacherDto teacher);
 }

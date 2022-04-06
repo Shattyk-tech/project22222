@@ -19,7 +19,7 @@ import static javax.persistence.CascadeType.*;
 @RequiredArgsConstructor
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String durationMonth;
@@ -28,10 +28,12 @@ public class Course {
     @ManyToOne
     private Company company;
 
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "courses", cascade = {CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE} )
+    @ManyToMany(fetch = FetchType.EAGER,
+            mappedBy = "courses",
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE} )
     private List<Group> groups;
 
-    @OneToOne(mappedBy = "course",cascade = ALL)
+    @OneToOne(mappedBy = "course",cascade = REMOVE)
     private Teacher teacher;
 
     @JsonIgnore

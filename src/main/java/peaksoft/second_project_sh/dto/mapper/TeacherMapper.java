@@ -1,7 +1,7 @@
 package peaksoft.second_project_sh.dto.mapper;
 
 import org.springframework.stereotype.Component;
-import peaksoft.second_project_sh.dto.response.TeacherDto;
+import peaksoft.second_project_sh.dto.TeacherDto;
 import peaksoft.second_project_sh.model.Teacher;
 
 @Component

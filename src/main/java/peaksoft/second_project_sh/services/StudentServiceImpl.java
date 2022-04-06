@@ -3,38 +3,45 @@ package peaksoft.second_project_sh.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import peaksoft.second_project_sh.dto.mapper.StudentMapper;
-import peaksoft.second_project_sh.dto.response.StudentDto;
+import peaksoft.second_project_sh.dto.StudentDto;
 import peaksoft.second_project_sh.model.Student;
+import peaksoft.second_project_sh.model.enums.StudyFormat;
 import peaksoft.second_project_sh.repositories.StudentRepository;
-
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
+
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 public class StudentServiceImpl implements StudentService{
-    @Autowired
+
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private  final GroupService groupService;
+
     @Override
     public Student saveStudent(StudentDto studentDto,Long ig) {
-
         Student student = studentMapper.create(studentDto);
-
         student.setGroup(groupService.getById(ig));
         return studentRepository.save(student);
     }
 
     @Override
-    public void removeStudentById(long id) {
+    public void removeStudentById(Long id) {
         studentRepository.deleteById(id);
     }
 
     @Override
     public Student getById(long id) {
-        return studentRepository.getById(id);
+        return studentRepository.findById(id)
+                .orElseThrow(()->{
+                    throw new NotFoundException(
+                            String.format("student with id = %s  does not exist",id)
+                    );
+                });
     }
 
     @Override
@@ -42,9 +49,43 @@ public class StudentServiceImpl implements StudentService{
         return studentRepository.findAll();
     }
 
+    @Transactional
     @Override
-    public Student update(long id, Student student) {
-       return  studentRepository.save(student);
+    public StudentDto update(Long id, StudentDto studentDto) {
+        Student student =studentRepository.findById(id)
+                .orElseThrow(()->{
+                    throw new NotFoundException(
+                            String.format("student with id = %s  does not exist",id)
+                    );
+                });
+
+        String studentName = student.getFirstName();
+        String newName = studentDto.getFirstName();
+
+        if (!Objects.equals(studentName, newName)) {
+            student.setFirstName(newName);
+        }
+
+        String lastName = student.getLastName();
+        String newLastName = studentDto.getLastName();
+
+        if (!Objects.equals(lastName,newLastName)){
+            student.setLastName(newLastName);
+        }
+        String email = student.getEmail();
+        String newEmail = studentDto.getEmail();
+
+        if (!Objects.equals(email,newEmail)){
+            student.setEmail(newEmail);
+        }
+        StudyFormat studyFormat = student.getStudyFormat();
+        StudyFormat newStudyFormat = studentDto.getStudyFormat();
+
+        if (!Objects.equals(studyFormat,newStudyFormat)){
+            student.setStudyFormat(newStudyFormat);
+        }
+
+        return studentDto;
 
     }
 }
