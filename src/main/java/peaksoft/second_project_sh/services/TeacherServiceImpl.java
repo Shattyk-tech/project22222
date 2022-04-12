@@ -1,6 +1,7 @@
 package peaksoft.second_project_sh.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import peaksoft.second_project_sh.dto.mapper.TeacherMapper;
@@ -20,9 +21,11 @@ public class TeacherServiceImpl implements TeacherService{
     private final TeacherRepository teacherRepository;
     private final TeacherMapper teacherMapper;
     private final  CourseService courseService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Teacher saveTeacher(TeacherDto teacherDto,Long teacherId) {
+        teacherDto.setPassword(passwordEncoder.encode(teacherDto.getPassword()));
         Teacher teacher = teacherMapper.create(teacherDto);
         teacher.setCourse(courseService.getById(teacherId));
         return teacherRepository.save(teacher);

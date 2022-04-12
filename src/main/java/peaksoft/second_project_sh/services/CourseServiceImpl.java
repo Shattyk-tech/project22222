@@ -28,6 +28,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    @Transactional
     public void removeCourseById(Long id)  {
         courseRepository.deleteById(id);
 

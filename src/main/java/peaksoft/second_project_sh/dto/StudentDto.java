@@ -16,4 +16,6 @@ public class StudentDto {
     private String email;
     @NotBlank
     private StudyFormat studyFormat;
+
+    private String password;
 }

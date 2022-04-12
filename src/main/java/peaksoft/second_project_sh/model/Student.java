@@ -25,4 +25,8 @@ public class Student {
     @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JsonIgnore
     private Group group;
+
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST})
+    private User users;
+
 }

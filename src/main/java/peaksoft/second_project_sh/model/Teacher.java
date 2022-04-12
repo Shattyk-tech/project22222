@@ -25,4 +25,7 @@ public class Teacher {
     @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JsonIgnore
     private Course course;
+
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST})
+    private User users;
 }

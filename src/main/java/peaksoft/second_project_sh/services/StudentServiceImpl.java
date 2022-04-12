@@ -2,6 +2,7 @@ package peaksoft.second_project_sh.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import peaksoft.second_project_sh.dto.mapper.StudentMapper;
@@ -21,11 +22,15 @@ public class StudentServiceImpl implements StudentService{
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private  final GroupService groupService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Student saveStudent(StudentDto studentDto,Long ig) {
+        studentDto.setPassword(passwordEncoder.encode(studentDto.getPassword()));
+
         Student student = studentMapper.create(studentDto);
         student.setGroup(groupService.getById(ig));
+
         return studentRepository.save(student);
     }
 

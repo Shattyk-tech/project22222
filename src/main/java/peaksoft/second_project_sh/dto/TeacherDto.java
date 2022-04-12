@@ -14,4 +14,6 @@ public class TeacherDto {
     @NotBlank
     private String email;
 
+    private String password;
+
 }
